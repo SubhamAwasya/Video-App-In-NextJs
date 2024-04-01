@@ -208,7 +208,7 @@ function Upload() {
             <button
               className="bg-blue-500 w-52 m-2 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
               onClick={uploadVideo}
-              disabled={videoFile ? false : true}
+              disabled={videoFile && videoUploadPercentage <= 0 ? false : true}
             >
               Upload Video
             </button>
@@ -259,7 +259,9 @@ function Upload() {
             <button
               className="bg-blue-500 w-52 m-2 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed"
               onClick={uploadThumbnail}
-              disabled={thumbnailFile ? false : true}
+              disabled={
+                thumbnailFile && thumbnailUploadPercentage <= 0 ? false : true
+              }
             >
               Upload Thumbnail
             </button>

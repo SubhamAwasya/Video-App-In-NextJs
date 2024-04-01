@@ -26,18 +26,23 @@ function SideBar() {
             {item.title}
           </Link>
         ))}
-        <hr></hr>
-        <Link
-          href={"/"}
-          className={`w-full h-10 px-2 gap-2 flex items-center rounded-xl border-2 border-transparent  hover:border-2 
+
+        {myContext.user && (
+          <>
+            <hr></hr>
+            <Link
+              href={"/"}
+              className={`w-full h-10 px-2 gap-2 flex items-center rounded-xl border-2 border-transparent hover:border-2 
           `}
-          onClick={myContext.LogOut}
-        >
-          <span className="text-2xl">
-            <BiLogOut />
-          </span>
-          LogOut
-        </Link>
+              onClick={myContext.LogOut}
+            >
+              <span className="text-2xl">
+                <BiLogOut />
+              </span>
+              LogOut
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

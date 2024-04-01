@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useEffect, useState, useContext } from "react";
 import { format } from "timeago.js";
 
-// components import
+// My
 import Video from "@/components/Video.jsx";
 import Comment from "@/components/Comment.jsx";
+import { useMyContext } from "@/context/ContextProvider";
 
 // icons import
 import { BiLike } from "react-icons/bi";
@@ -14,8 +15,10 @@ import { BiDislike } from "react-icons/bi";
 import { MdOutlineSubscriptions } from "react-icons/md";
 
 const VideoPlayer = () => {
+  const myContext = useMyContext();
+
   const { user } = {};
-  const [videoData, setVideoData] = useState({});
+  const [videoData, setVideoData] = useState(myContext.video);
   const [userData, setUserData] = useState({});
   const [comments, setComments] = useState([]);
 
@@ -43,13 +46,13 @@ const VideoPlayer = () => {
         <video
           id="videoPlayer"
           className="-z-10 w-full aspect-video rounded-lg"
-          src={"OnePiece.mkv"}
+          src={myContext?.video?.data?.videoURL}
           autoPlay
           controls
         ></video>
         <div className="-z-10 w-full rounded-lg p-2 h-16">
           {/*title -----------------------------------------------------------------------------------------------------------------------*/}
-          <div className="text-2xl mb-2">{videoData.title}</div>
+          <div className="text-2xl mb-2">{videoData?.title}</div>
           <div className="justify-between flex video_player-detail">
             <div className="flex items-center">
               {/*User profile img-----------------------------------------------------------------------------------------------------------------------*/}
@@ -90,7 +93,7 @@ const VideoPlayer = () => {
               >
                 <BiLike />
                 Like
-                {videoData.likes?.length}
+                {10}
               </button>
               <button
                 disabled={!user}
@@ -100,7 +103,7 @@ const VideoPlayer = () => {
               >
                 <BiDislike />
                 Dislike
-                {videoData.dislikes?.length}
+                {10}
               </button>
               <button
                 disabled={!user}

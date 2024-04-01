@@ -8,6 +8,7 @@ export const useMyContext = () => useContext(Context);
 
 function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [video, setVideo] = useState(null);
   const [toggleLoginPage, setToggleLoginPage] = useState(false);
   const [toggleSignupPage, setToggleSignupPage] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -68,6 +69,8 @@ function ContextProvider({ children }) {
     <Context.Provider
       value={{
         user,
+        video,
+        setVideo,
         LogIn,
         LogOut,
         toggleLoginPage,

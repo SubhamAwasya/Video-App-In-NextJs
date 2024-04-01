@@ -4,9 +4,9 @@ import { getDoc, doc } from "firebase/firestore";
 //my
 import { fireStoreDB } from "@/helper/serverFirebase";
 
-console.log("LogOut========================================================");
+console.log("Get User========================================================");
 
-export async function POST(request, { params }) {
+export async function GET(request, { params }) {
   try {
     console.log(params.id);
     // Find user in database
