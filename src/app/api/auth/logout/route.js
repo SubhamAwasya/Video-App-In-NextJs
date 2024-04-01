@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getDoc, doc } from "firebase/firestore";
 import jwt from "jsonwebtoken";
 //my
-import { fireStoreDB } from "@/helper/firebase";
+import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log("LogOut========================================================");
 

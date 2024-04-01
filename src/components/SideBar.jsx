@@ -10,7 +10,7 @@ function SideBar() {
   const currentPathname = usePathname();
   const myContext = useMyContext();
   return (
-    <div className="bg-neutral-900 fixed left-0 top-14 z-50 w-52 text-white h-screen p-4">
+    <div className="bg-neutral-900 fixed left-0 top-14 z-40 w-52 text-white h-screen p-4">
       <div className="w-full h-full flex flex-col gap-1">
         {sideBarLinks.map((item, i) => (
           <Link

@@ -43,7 +43,7 @@ const Navbar = () => {
       {/* UserMenu */}
       {myContext.user ? (
         <div
-          className="flex gap-2 items-center cursor-pointer"
+          className="flex gap-2 items-center cursor-pointer z-50"
           onClick={() => setUserMenu((prev) => !prev)}
         >
           {userMenu && (

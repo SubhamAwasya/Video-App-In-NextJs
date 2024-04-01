@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import bcrypt from "bcrypt";
 //my
-import { fireStoreDB } from "@/helper/firebase";
+import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log("SignUp========================================================");
 

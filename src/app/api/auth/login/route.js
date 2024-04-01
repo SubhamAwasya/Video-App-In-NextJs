@@ -4,7 +4,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 //my
-import { fireStoreDB } from "@/helper/firebase";
+import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log("SigIn========================================================");
 

@@ -41,7 +41,7 @@ function Login({ prop }) {
       })
       .then((res) => {
         // Handle the data returned from the server
-        console.log(res);
+        console.log(res.data);
         setIsLoading(false);
         if (res.message == "Login successful") {
           myContext.LogIn(res.data);
