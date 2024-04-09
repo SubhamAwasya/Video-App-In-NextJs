@@ -6,7 +6,7 @@ function Profile() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!window.localStorage.getItem("isLoggedIn")) {
+    if (!window.localStorage.getItem("user")) {
       router.push("/");
     }
   }, []);

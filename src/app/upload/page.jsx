@@ -1,11 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-// Icons
-import { BiVideo } from "react-icons/bi";
-import { BiImage } from "react-icons/bi";
 
 // my Imports
 import { storage } from "@/utils/clientFirebase";
@@ -159,7 +155,7 @@ function Upload() {
   };
 
   useEffect(() => {
-    if (!window.localStorage.getItem("isLoggedIn")) {
+    if (!window.localStorage.getItem("user")) {
       router.push("/");
     }
   }, []);
