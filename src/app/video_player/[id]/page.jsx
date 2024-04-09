@@ -6,9 +6,9 @@ import { format } from "timeago.js";
 import { useParams } from "next/navigation";
 
 // My
-import Video from "@/components/Video.jsx";
-import Comment from "@/components/Comment.jsx";
 import { useMyContext } from "@/context/ContextProvider";
+import Textarea from "@/components/ui-components/Textarea";
+import VideoGrid from "@/components/VideoGrid";
 
 // icons import
 import { BiLike } from "react-icons/bi";
@@ -25,11 +25,15 @@ const VideoPlayer = () => {
 
   const params = useParams();
 
-  // resizing textarea based on text present in text box
-  function AutoResizingTextarea(event) {
-    const textarea = event.target;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
+  const [suggestVideo, setSuggestVideo] = useState(null);
+
+  function getRandomVideos() {
+    fetch(process.env.NEXT_PUBLIC_RANDOM_VIDEO)
+      .then((res) => res.json())
+      .then((res) => setSuggestVideo(res))
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function getUser(id) {
@@ -53,6 +57,11 @@ const VideoPlayer = () => {
         console.log(error);
       });
   }
+
+  useEffect(() => {
+    getRandomVideos();
+  }, []);
+
   useEffect(() => {
     getVideo();
     window.scrollTo(0, -1);
@@ -68,11 +77,11 @@ const VideoPlayer = () => {
 
   return (
     <div className="flex justify-center w-full m-2 max-md:m-0 ">
-      <div className="w-full max-w-[100rem]">
+      <div className="w-full max-w-[60rem]">
         {/*Video Tag is hear-----------------------------------------------------------------------------------------------------------------------*/}
         <video
           id="videoPlayer"
-          className="-z-10 w-full aspect-video rounded-lg"
+          className="-z-10 w-full aspect-video rounded-lg mt-4"
           src={videoData.videoUrl}
           autoPlay
           controls
@@ -114,7 +123,7 @@ const VideoPlayer = () => {
               <button
                 disabled={!user}
                 onClick={() => {}}
-                className="flex items-center justify-center gap-2 w-32 p-2 rounded-xl border-2 hover:bg-neutral-600 hover:border-2
+                className="btn btn-info
       "
               >
                 <BiLike />
@@ -124,7 +133,7 @@ const VideoPlayer = () => {
               <button
                 disabled={!user}
                 onClick={() => {}}
-                className="flex items-center justify-center gap-2 w-32 p-2 rounded-xl border-2 hover:bg-neutral-600 hover:border-2
+                className="btn btn-info
       "
               >
                 <BiDislike />
@@ -133,7 +142,7 @@ const VideoPlayer = () => {
               </button>
               <button
                 disabled={!user}
-                className="flex items-center justify-center gap-2 w-32 p-2 rounded-xl border-2 hover:bg-neutral-600 hover:border-2
+                className="btn btn-error
       "
               >
                 <MdOutlineSubscriptions />
@@ -144,24 +153,7 @@ const VideoPlayer = () => {
           <hr className="m-4"></hr>
 
           {/*input comments-----------------------------------------------------------------------------------------------------------------------*/}
-          <div className="flex flex-col items-end">
-            <textarea
-              maxLength="200"
-              placeholder={user ? "Add comment :" : "Login to add comment"}
-              disabled={!user}
-              onChange={(e) => {}}
-              onInput={AutoResizingTextarea}
-              className="w-full resize-none overflow-hidden rounded-lg p-2 text-sm outline-none"
-            />
-            {!user || (
-              <button
-                onClick={() => {}}
-                className="flex items-center justify-center h-[2rem] py-1 px-2 mt-2 rounded-lg border-2 border-neutral-400 hover:border-red-500 hover:text-red-500 text-xs disabled:text-zinc-700 disabled:border-zinc-700"
-              >
-                Comment
-              </button>
-            )}
-          </div>
+          <Textarea />
           {/*comments-----------------------------------------------------------------------------------------------------------------------
           <div className="video_comments_container mt-2">
             <span className="text-lg font-extrabold">Comments :</span>
@@ -172,7 +164,9 @@ const VideoPlayer = () => {
         </div>
       </div>
       {/*right video suggestion-----------------------------------------------------------------------------------------------------------------------*/}
-      <div className="flex-col w-full max-w-96 max-lg:hidden pl-5 h-fit"></div>
+      <div className="flex-col w-full max-w-96 max-lg:hidden pl-5 h-fit">
+        <VideoGrid videos={suggestVideo} />
+      </div>
     </div>
   );
 };

@@ -12,7 +12,7 @@ function FileInput(props) {
       {props.fileAccept === "video/*"
         ? props.file && (
             <video
-              className="video w-full h-full max-w-xs max-h-xs rounded-md"
+              className="video w-full h-full aspect-video max-w-xs max-h-xs rounded-md"
               src={URL.createObjectURL(props.file)}
               controls
             ></video>
