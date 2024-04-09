@@ -9,7 +9,6 @@ import { BiImage } from "react-icons/bi";
 
 // my Imports
 import { storage } from "@/utils/clientFirebase";
-import Progress from "@/components/ui-components/progress";
 import FileInput from "@/components/ui-components/FileInput";
 
 function Upload() {
