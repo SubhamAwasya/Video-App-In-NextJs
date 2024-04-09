@@ -28,7 +28,7 @@ const VideoPlayer = () => {
   const [suggestVideo, setSuggestVideo] = useState(null);
 
   function getRandomVideos() {
-    fetch(process.env.NEXT_PUBLIC_RANDOM_VIDEO)
+    fetch("/api/videos/get-random-videos")
       .then((res) => res.json())
       .then((res) => setSuggestVideo(res))
       .catch((error) => {
@@ -37,7 +37,7 @@ const VideoPlayer = () => {
   }
 
   function getUser(id) {
-    fetch(process.env.NEXT_PUBLIC_GET_USER + id)
+    fetch("/api/user/get-user/" + id)
       .then((res) => res.json())
       .then((res) => {
         setUserData(res.data);
@@ -47,7 +47,7 @@ const VideoPlayer = () => {
       });
   }
   function getVideo() {
-    fetch(process.env.NEXT_PUBLIC_GET_VIDEO + params.id)
+    fetch("/api/videos/get-video/" + params.id)
       .then((res) => res.json())
       .then((res) => {
         setVideoData(res.data);
@@ -97,7 +97,7 @@ const VideoPlayer = () => {
                 state={{ isOtherUserProfile: true, ...userData }}
               >
                 <Image
-                  src={userData.profileImg || "/DefaultProfile.png"}
+                  src={userData?.profileImg || "/DefaultProfile.png"}
                   width={100}
                   height={100}
                   alt=""
@@ -110,7 +110,7 @@ const VideoPlayer = () => {
                   href={`/profile`}
                   className="video_player-channel_name font-bold"
                 >
-                  {userData.name}
+                  {userData?.name}
                 </Link>
                 {/*user subscribers-----------------------------------------------------------------------------------------------------------------------*/}
                 <div className="text-sm opacity-50">12m subscribers</div>

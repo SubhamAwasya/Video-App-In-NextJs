@@ -12,7 +12,7 @@ export async function POST(req) {
     const token = req.cookies.get("accessToken")?.value;
 
     if (!token) {
-      return NextResponse.json("You Don't Have access token", {
+      return NextResponse.json("Unauthorized", {
         status: 401,
       });
     }

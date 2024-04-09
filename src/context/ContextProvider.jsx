@@ -12,7 +12,7 @@ function ContextProvider({ children }) {
   const [toggleSignUpPage, setToggleSignUpPage] = useState(false);
 
   async function LogOut() {
-    fetch(process.env.NEXT_PUBLIC_LOGOUT)
+    fetch("/api/auth/logout")
       .then((response) => {
         if (!response.ok) {
           throw new Error(

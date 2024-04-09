@@ -8,7 +8,7 @@ export default function Home() {
   const [videos, setVideos] = useState(null);
 
   function getRandomVideos() {
-    fetch(process.env.NEXT_PUBLIC_RANDOM_VIDEO)
+    fetch("/api/videos/get-random-videos")
       .then((res) => res.json())
       .then((res) => setVideos(res))
       .catch((error) => {

@@ -23,7 +23,7 @@ export async function POST(request) {
 
     // Encrypt password
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(req.password || "", salt);
+    const hashedPassword = bcrypt.hashSync(req.password, salt);
 
     // Storing data in fireStore DB
     const newUser = await User.create({
@@ -31,23 +31,29 @@ export async function POST(request) {
       email: req.email,
       password: hashedPassword,
     });
+    console.log(newUser);
 
     // Is data stored successfully
-    if (!newUser || !newUser.id) {
+    if (!newUser || !newUser._id) {
       return new NextResponse(
         JSON.stringify({
           message: "Failed to store data in firebase",
         })
       );
     }
-    // Sending response
 
+    // Sending response
     return new NextResponse(
       JSON.stringify({
         message: "SignUp successful",
       })
     );
-  } catch (e) {
-    console.error("Error adding document: ", e);
+  } catch (error) {
+    console.error("Error adding document: ", error);
+    return new NextResponse(
+      JSON.stringify({
+        message: "Something went wrong while signing up",
+      })
+    );
   }
 }

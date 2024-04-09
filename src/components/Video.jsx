@@ -8,7 +8,7 @@ function Video({ video }) {
   const [user, setUser] = useState(null);
 
   function getUser() {
-    fetch(process.env.NEXT_PUBLIC_GET_USER + video?.userId)
+    fetch("/api/user/get-user/" + video?.userId)
       .then((res) => res.json())
       .then((res) => {
         setUser(res.data);

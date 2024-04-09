@@ -126,7 +126,7 @@ function Upload() {
       thumbnailURL,
     };
 
-    await fetch(process.env.NEXT_PUBLIC_UPLOAD_VIDEO, {
+    await fetch("/api/user/upload-video", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

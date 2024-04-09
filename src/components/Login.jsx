@@ -30,7 +30,7 @@ function Login({ prop }) {
     };
 
     // Make the fetch request
-    fetch(process.env.NEXT_PUBLIC_LOGIN, requestOptions)
+    fetch("/api/auth/login", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(
@@ -41,7 +41,7 @@ function Login({ prop }) {
       })
       .then((res) => {
         // Handle the data returned from the server
-        console.log(res.data);
+
         setIsLoading(false);
         if (res.message == "Login successful") {
           myContext.LogIn(res.data);

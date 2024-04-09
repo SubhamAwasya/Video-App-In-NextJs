@@ -28,13 +28,12 @@ function Login({ prop }) {
     };
 
     // Make the fetch request
-    fetch(process.env.NEXT_PUBLIC_SIGNUP, requestOptions)
+    fetch("/api/auth/signup", requestOptions)
       .then((response) => {
         return response.json(); // Parse the response body as JSON
       })
       .then((data) => {
         // Handle the data returned from the server
-        console.log("Response data:", data);
         setIsLoading(false);
         setInfoText(data);
       })
