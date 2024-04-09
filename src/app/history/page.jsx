@@ -3,7 +3,7 @@ import VideoGrid from "@/components/VideoGrid";
 function History() {
   return (
     <>
-      <VideoGrid />
+      <div>History</div>
     </>
   );
 }

@@ -1,31 +1,37 @@
+import User from "@/server/models/User";
+import { connectDB } from "@/server/utils/db";
 import { NextResponse } from "next/server";
-import { getDoc, doc } from "firebase/firestore";
-
 //my
-import { fireStoreDB } from "@/helper/serverFirebase";
 
-console.log("Get User========================================================");
+console.log(
+  "Get User By Id========================================================"
+);
+
+connectDB();
 
 export async function GET(request, { params }) {
   try {
-    console.log(params.id);
     // Find user in database
-    const docRef = doc(fireStoreDB, "users", params?.id);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      return NextResponse.json("User Not Found", { status: 401 });
-    }
+
+    const user = await User.findById(params.id).select(
+      "-password  -refreshToken"
+    );
 
     // Sending response
     const res = new NextResponse(
       JSON.stringify({
         message: "User Received",
-        data: docSnap.data(),
+        data: user,
       })
     );
 
     return res;
   } catch (e) {
-    console.error("Error in Logout ", e);
+    console.error("Error in receiving user by id ", e);
+    const res = new NextResponse(
+      JSON.stringify({
+        message: "User Not Found",
+      })
+    );
   }
 }

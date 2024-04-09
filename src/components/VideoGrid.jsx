@@ -1,13 +1,10 @@
-"use client";
 import Video from "./Video";
-import { useMyContext } from "@/context/ContextProvider.jsx";
 
 function VideoGrid({ videos }) {
-  const myContext = useMyContext();
   if (!videos) return "";
 
   return (
-    <div className={`video-page-container gap-4 h-fit w-full`}>
+    <div className={`video-page-container gap-4 h-fit w-full md:p-4`}>
       {videos?.map((video, i) => (
         <Video key={i} video={video} />
       ))}

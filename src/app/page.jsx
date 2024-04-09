@@ -19,9 +19,13 @@ export default function Home() {
     getRandomVideos();
   }, []);
 
-  return (
-    <>
-      <VideoGrid videos={videos} />
-    </>
-  );
+  if (!videos) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <span className="loading loading-infinity w-32 h-32"></span>
+      </div>
+    );
+  }
+
+  return <>{<VideoGrid videos={videos} />}</>;
 }

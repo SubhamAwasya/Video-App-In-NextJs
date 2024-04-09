@@ -8,13 +8,10 @@ export const useMyContext = () => useContext(Context);
 
 function ContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [video, setVideo] = useState(null);
   const [toggleLoginPage, setToggleLoginPage] = useState(false);
-  const [toggleSignupPage, setToggleSignupPage] = useState(false);
-  const [toggleSidebar, setToggleSidebar] = useState(false);
+  const [toggleSignUpPage, setToggleSignUpPage] = useState(false);
 
   async function LogOut() {
-    window.localStorage.removeItem("isLoggedIn");
     fetch(process.env.NEXT_PUBLIC_LOGOUT)
       .then((response) => {
         if (!response.ok) {
@@ -26,8 +23,7 @@ function ContextProvider({ children }) {
       })
       .then((res) => {
         setUser(null);
-
-        console.log("LogOut Success");
+        window.localStorage.removeItem("user");
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -36,49 +32,26 @@ function ContextProvider({ children }) {
   async function LogIn(user) {
     setUser(user);
     setToggleLoginPage(false);
-    setToggleSignupPage(false);
-    window.localStorage.setItem("isLoggedIn", true);
-  }
-  async function TokenLogin() {
-    fetch(process.env.NEXT_PUBLIC_TOKEN_LOGIN)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `Network response was not ok. Status: ${response.status}`
-          );
-        }
-        return response.json(); // Parse the response body as JSON
-      })
-      .then((res) => {
-        // Handle the data returned from the server
-        LogIn(res.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    setToggleSignUpPage(false);
+    window.localStorage.setItem("user", JSON.stringify(user));
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem("isLoggedIn")) {
-      TokenLogin();
+    if (window.localStorage.getItem("user")) {
+      setUser(JSON.parse(window.localStorage.getItem("user")));
     }
-    if (!user) window.localStorage.removeItem("isLoggedIn");
   }, []);
 
   return (
     <Context.Provider
       value={{
         user,
-        video,
-        setVideo,
         LogIn,
         LogOut,
         toggleLoginPage,
         setToggleLoginPage,
-        toggleSignupPage,
-        setToggleSignupPage,
-        toggleSidebar,
-        setToggleSidebar,
+        toggleSignUpPage,
+        setToggleSignUpPage,
       }}
     >
       {children}

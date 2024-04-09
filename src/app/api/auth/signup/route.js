@@ -1,27 +1,22 @@
+import { connectDB } from "@/server/utils/db";
 import { NextResponse } from "next/server";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import User from "@/server/models/User";
 import bcrypt from "bcrypt";
 //my
-import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log("SignUp========================================================");
+
+connectDB();
 
 export async function POST(request) {
   const req = await request.json();
   try {
     // Find user in database
-    const q = query(
-      collection(fireStoreDB, "users"),
-      where("email", "==", req.email)
-    );
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot?.docs[0]?.data()) {
-      // At least one document matches the query
-      console.log("test");
+    const user = await User.findOne({ email: req.email });
+    if (user) {
       return new NextResponse(
         JSON.stringify({
-          message: "User already exists! You can log in.",
+          message: "User already exists",
         })
       );
     }
@@ -31,14 +26,14 @@ export async function POST(request) {
     const hashedPassword = bcrypt.hashSync(req.password || "", salt);
 
     // Storing data in fireStore DB
-    const docRef = await addDoc(collection(fireStoreDB, "users"), {
+    const newUser = await User.create({
       name: req.name,
       email: req.email,
       password: hashedPassword,
     });
 
     // Is data stored successfully
-    if (!docRef.id) {
+    if (!newUser || !newUser.id) {
       return new NextResponse(
         JSON.stringify({
           message: "Failed to store data in firebase",

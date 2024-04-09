@@ -1,36 +1,30 @@
-export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import { collection, query, where, getDocs } from "firebase/firestore";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import User from "@/server/models/User";
+import { connectDB } from "@/server/utils/db";
 //my
-import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log("SigIn========================================================");
+
+connectDB();
 
 export async function POST(request) {
   const req = await request.json();
 
   try {
     // Find user in database
-    const q = query(
-      collection(fireStoreDB, "users"),
-      where("email", "==", req.email)
-    );
-    const querySnapshot = await getDocs(q);
+    const userData = await User.findOne({
+      email: req.email,
+    });
 
-    if (querySnapshot?.empty) {
+    if (!userData) {
       return new NextResponse(
         JSON.stringify({
-          message: "You are not registered! please SignUp",
+          message: "You are not registered",
         })
       );
     }
-
-    // User DATA and ID
-    const firstDocument = querySnapshot.docs[0];
-    const userData = firstDocument.data(); // Get the document
-    const userId = firstDocument.id; // Get the document ID
 
     // Checking Password is correct or not
     const isPasswordCorrect = await bcrypt.compare(
@@ -47,7 +41,7 @@ export async function POST(request) {
 
     // Generate Access and Refresh token
     const userForJWT = {
-      id: userId,
+      id: userData.id,
       email: userData.email,
     };
 
@@ -68,11 +62,13 @@ export async function POST(request) {
     //   }
     // );
 
+    // Saprate user data and password
+
     // Sending response
     const res = new NextResponse(
       JSON.stringify({
         message: "Login successful",
-        data: { name: userData.name, email: userData.email },
+        data: userData,
       })
     );
     // Setting Cookies

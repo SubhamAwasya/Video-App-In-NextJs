@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { collection, addDoc } from "firebase/firestore";
 import jwt from "jsonwebtoken";
+import Video from "@/server/models/Video";
 //my
-import { fireStoreDB } from "@/helper/serverFirebase";
 
 console.log(
   "Upload Video========================================================"
@@ -11,7 +10,7 @@ console.log(
 export async function POST(req) {
   try {
     const token = req.cookies.get("accessToken")?.value;
-    console.log(token);
+
     if (!token) {
       return NextResponse.json("You Don't Have access token", {
         status: 401,
@@ -21,7 +20,7 @@ export async function POST(req) {
     const videoData = await req.json();
     // Decode Access Token
     let decodedToken;
-    console.log(decodedToken);
+
     try {
       decodedToken = await jwt.decode(token);
     } catch (error) {
@@ -29,24 +28,22 @@ export async function POST(req) {
       return NextResponse.json("Invalid Token", { status: 401 });
     }
 
-    const test = {
-      userID: decodedToken?.id,
+    const video = {
+      userId: decodedToken?.id,
       title: videoData.title,
-      description: videoData.description,
+      desc: videoData.description,
       tags: videoData.tags,
-      videoURL: videoData.videoURL,
-      thumbnailURL: videoData.thumbnailURL,
+      videoUrl: videoData.videoURL,
+      thumbnail: videoData.thumbnailURL,
     };
-    console.log(test);
-    // Storing data in fireStore DB
-    const docRef = await addDoc(collection(fireStoreDB, "videos"), test);
+
+    // Storing data in Mongo db
+    const newVideo = await Video.create(video);
 
     // Is data stored successfully
-    if (!docRef.id) {
+    if (!newVideo) {
       return new NextResponse(
-        JSON.stringify({
-          message: "Failed to store data in firebase",
-        })
+        JSON.stringify({ message: "Video Upload Failed" })
       );
     }
 
@@ -55,6 +52,6 @@ export async function POST(req) {
     );
   } catch (error) {
     console.log(error);
-    return new NextResponse(JSON.stringify({ message: "Test" }));
+    return new NextResponse(JSON.stringify({ message: "Video Upload Failed" }));
   }
 }

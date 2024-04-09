@@ -1,20 +1,17 @@
-import { fireStoreDB } from "@/helper/serverFirebase";
-import { collection, getDocs } from "firebase/firestore";
+import Video from "@/server/models/Video";
+import { connectDB } from "@/server/utils/db";
 import { NextResponse } from "next/server";
 
 console.log(
   "Random Video========================================================"
 );
 
+connectDB();
+
 export async function GET(req) {
   try {
-    const querySnapshot = await getDocs(collection(fireStoreDB, "videos"));
-    const videos = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      videos.push({ id: doc.id, data: doc.data() });
-    });
-    return new NextResponse(JSON.stringify(videos));
+    const video = await Video.find({});
+    return new NextResponse(JSON.stringify(video));
   } catch (error) {
     console.error("Error fetching random documents:", error);
     return new NextResponse(JSON.stringify({ message: error }));

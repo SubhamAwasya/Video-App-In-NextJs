@@ -10,22 +10,12 @@ function MyRoot({ children }) {
 
   return (
     <>
-      <div className="text-white flex w-auto h-auto">
+      <div className="text-white flex flex-col w-auto min-h-screen">
         <Navbar />
-        <div
-          className={`relative flex justify-center w-screen min-h-screen bg-neutral-800 top-14 px-2 pt-2 
-          ${
-            myContext.toggleSidebar
-              ? " left-52 max-md:left-0 md:w-[calc(100vw-13rem)] "
-              : " left-0 "
-          }
-          `}
-        >
-          {children}
-        </div>
-        {myContext.toggleSidebar && <SideBar />}
+        <div className="min-h-screen flex justify-center">{children}</div>
+        <SideBar />
         {myContext.toggleLoginPage && <Login />}
-        {myContext.toggleSignupPage && <SignUp />}
+        {myContext.toggleSignUpPage && <SignUp />}
       </div>
     </>
   );
