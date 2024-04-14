@@ -125,7 +125,7 @@ function Profile() {
   }, []);
 
   return (
-    <div className="flex flex-col md:justify-center w-full p-4 gap-4 max-md:items-center">
+    <div className="flex flex-col w-full p-4 gap-4 max-md:items-center">
       <div className="flex flex-col items-center w-full">
         <ProfileImageInput />
         <form className="flex flex-col gap-2">

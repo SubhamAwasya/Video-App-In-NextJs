@@ -1,8 +1,8 @@
 import Video from "./Video";
 
 function VideoGrid({ videos }) {
+  console.log(videos);
   if (!videos) return "";
-
   return (
     <div className={`video-page-container gap-4 h-fit w-full md:p-4`}>
       {videos?.map((video, i) => (
