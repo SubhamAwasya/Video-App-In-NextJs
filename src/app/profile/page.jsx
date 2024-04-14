@@ -5,14 +5,16 @@ import { useMyContext } from "@/context/ContextProvider";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/utils/clientFirebase";
 import Image from "next/image";
+import VideoGrid from "@/components/VideoGrid";
 
 function Profile() {
   const router = useRouter();
 
-  const { user } = useMyContext();
+  const { user, LogIn } = useMyContext();
 
   const [profile, setProfile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [myVideos, setMyVideos] = useState([]);
 
   function UpdateProfile() {
     if (!profile) return;
@@ -42,13 +44,18 @@ function Profile() {
             body: JSON.stringify({
               profileUrl: downloadURL,
             }),
-          }).then((res) => {
-            if (res.status === 200) {
-              alert("Profile Updated Successfully");
-              setProfile(null);
-              setIsUploading(false);
-            }
-          });
+          })
+            .then((res) => {
+              if (res.status === 200) {
+                alert("Profile Updated Successfully");
+                setProfile(null);
+                setIsUploading(false);
+              }
+              return res.json();
+            })
+            .then((res) => {
+              LogIn(res.data);
+            });
         });
       }
     );
@@ -58,6 +65,7 @@ function Profile() {
     return (
       <div className="flex flex-col w-fit gap-2 mb-2">
         <Image
+          priority
           src={
             (profile && URL?.createObjectURL(profile)) ||
             user?.profileImg ||
@@ -96,29 +104,48 @@ function Profile() {
     );
   }
 
+  function getMyVideos() {
+    fetch("/api/user/get-my-videos")
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setMyVideos(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
     if (!window.localStorage.getItem("user")) {
       router.push("/");
+      return;
     }
+    getMyVideos();
   }, []);
+
   return (
-    <div className="flex md:justify-center w-full p-4 gap-4 max-md:flex-col max-md:items-center">
-      <ProfileImageInput />
-      <form className="flex flex-col gap-2">
-        <input
-          type="text"
-          name="name"
-          placeholder={user?.name}
-          className="input input-bordered w-full max-w-xs"
-        />
-        <input
-          type="text"
-          name="email"
-          placeholder={user?.email}
-          className="input input-bordered w-full max-w-xs"
-        />
-        <div>subscribers : {user?.subscribers}</div>
-      </form>
+    <div className="flex flex-col md:justify-center w-full p-4 gap-4 max-md:items-center">
+      <div className="flex flex-col items-center w-full">
+        <ProfileImageInput />
+        <form className="flex flex-col gap-2">
+          <input
+            type="text"
+            name="name"
+            placeholder={user?.name}
+            className="input input-bordered w-full max-w-xs"
+          />
+          <input
+            type="text"
+            name="email"
+            placeholder={user?.email}
+            className="input input-bordered w-full max-w-xs"
+          />
+          <div>subscribers : {user?.subscribers}</div>
+        </form>
+      </div>
+      <hr></hr>
+      <VideoGrid videos={myVideos} />
     </div>
   );
 }

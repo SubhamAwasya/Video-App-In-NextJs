@@ -46,6 +46,7 @@ function Video({ video }) {
         </div>
         <div className="flex w-auto">
           <Image
+            priority
             src={user?.profileImg || "/DefaultProfile.png"}
             width={100}
             height={100}

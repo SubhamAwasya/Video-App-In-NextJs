@@ -37,9 +37,13 @@ function ContextProvider({ children }) {
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem("user")) {
-      setUser(JSON.parse(window.localStorage.getItem("user")));
+    async function getUser() {
+      const user = await window.localStorage.getItem("user");
+      if (user) {
+        await setUser(JSON.parse(user));
+      }
     }
+    getUser();
   }, []);
 
   return (

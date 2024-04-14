@@ -64,6 +64,7 @@ const Navbar = () => {
             >
               <div className="w-10 rounded-full ">
                 <Image
+                  priority
                   width="40"
                   height="40"
                   alt="Avatar"

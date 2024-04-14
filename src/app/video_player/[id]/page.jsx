@@ -16,12 +16,16 @@ import { BiDislike } from "react-icons/bi";
 import { MdOutlineSubscriptions } from "react-icons/md";
 
 const VideoPlayer = () => {
-  const myContext = useMyContext();
-  const user = myContext.user;
+  // const myContext = useMyContext();
+  // const user = myContext.user;
+  const { user } = useMyContext();
 
   const [videoData, setVideoData] = useState({});
   const [userData, setUserData] = useState({});
   const [comments, setComments] = useState([]);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const params = useParams();
 
@@ -35,7 +39,6 @@ const VideoPlayer = () => {
         console.log(error);
       });
   }
-
   function getUser(id) {
     fetch("/api/user/get-user/" + id)
       .then((res) => res.json())
@@ -51,7 +54,56 @@ const VideoPlayer = () => {
       .then((res) => res.json())
       .then((res) => {
         setVideoData(res.data);
+        // check if liked or disliked
+        if (res.data.likes.includes(user?._id)) {
+          setIsLiked(true);
+          setIsDisliked(false);
+        }
+        if (res.data.dislikes.includes(user?._id)) {
+          setIsDisliked(true);
+          setIsLiked(false);
+        }
+
         getUser(res?.data?.userId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  function addView() {
+    fetch("/api/videos/add-view/", {
+      method: "PUT",
+      body: JSON.stringify({ videoId: params.id }),
+    })
+      .then((res) => res.json())
+      .then((res) => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  function addRemoveLike() {
+    fetch("/api/videos/like", {
+      method: "PUT",
+      body: JSON.stringify({ videoId: params.id }),
+    })
+      .then((res) => res.json())
+      .then((res) => JSON.parse(res.data))
+      .then((res) => {
+        setVideoData(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  function addRemoveDislike() {
+    fetch("/api/videos/dislike", {
+      method: "PUT",
+      body: JSON.stringify({ videoId: params.id }),
+    })
+      .then((res) => res.json())
+      .then((res) => JSON.parse(res.data))
+      .then((res) => {
+        setVideoData(res);
       })
       .catch((error) => {
         console.log(error);
@@ -60,6 +112,7 @@ const VideoPlayer = () => {
 
   useEffect(() => {
     getRandomVideos();
+    addView();
   }, []);
 
   useEffect(() => {
@@ -97,6 +150,7 @@ const VideoPlayer = () => {
                 state={{ isOtherUserProfile: true, ...userData }}
               >
                 <Image
+                  priority
                   src={userData?.profileImg || "/DefaultProfile.png"}
                   width={100}
                   height={100}
@@ -122,9 +176,12 @@ const VideoPlayer = () => {
             <div className="flex gap-2 max-sm:flex-col">
               <button
                 disabled={!user}
-                onClick={() => {}}
-                className="btn btn-info
-      "
+                onClick={() => {
+                  addRemoveLike();
+                  setIsLiked((prev) => !prev);
+                  setIsDisliked(false);
+                }}
+                className={`btn  ${isLiked ? "btn-info" : "btn-outline"}`}
               >
                 <BiLike />
                 Like &nbsp;
@@ -132,9 +189,12 @@ const VideoPlayer = () => {
               </button>
               <button
                 disabled={!user}
-                onClick={() => {}}
-                className="btn btn-info
-      "
+                onClick={() => {
+                  addRemoveDislike();
+                  setIsDisliked((prev) => !prev);
+                  setIsLiked(false);
+                }}
+                className={`btn  ${isDisliked ? "btn-info" : "btn-outline"}`}
               >
                 <BiDislike />
                 Dislike &nbsp;
@@ -142,8 +202,10 @@ const VideoPlayer = () => {
               </button>
               <button
                 disabled={!user}
-                className="btn btn-error
-      "
+                onClick={() => {
+                  setIsSubscribed((prev) => !prev);
+                }}
+                className={`btn  ${!isSubscribed && "btn-outline"} btn-error`}
               >
                 <MdOutlineSubscriptions />
                 Subscribe
@@ -151,16 +213,15 @@ const VideoPlayer = () => {
             </div>
           </div>
           <hr className="m-4"></hr>
-
           {/*input comments-----------------------------------------------------------------------------------------------------------------------*/}
           <Textarea />
-          {/*comments-----------------------------------------------------------------------------------------------------------------------
+          {/* comments----------------------------------------------------------------------------------------------------------------------- */}
           <div className="video_comments_container mt-2">
             <span className="text-lg font-extrabold">Comments :</span>
             {comments.map((element, i) => {
               return <Comment key={i} props={element} />;
             })}
-          </div>*/}
+          </div>
         </div>
       </div>
       {/*right video suggestion-----------------------------------------------------------------------------------------------------------------------*/}

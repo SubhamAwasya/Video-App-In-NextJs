@@ -14,7 +14,6 @@ connectDB();
 export async function PUT(request) {
   try {
     const req = await request.json();
-
     const token = request.cookies.get("accessToken")?.value;
 
     if (!token) {
@@ -34,13 +33,13 @@ export async function PUT(request) {
     // Find user in database and update profileUrl
     const user = await User.findById(decodedToken?.id);
     user.profileImg = req.profileUrl;
-    await user.save();
+    const updatedUser = await user.save({ new: true });
 
     // Sending response
     const res = new NextResponse(
       JSON.stringify({
         message: "Profile Updated Successfully!",
-        data: user,
+        data: updatedUser,
       })
     );
 

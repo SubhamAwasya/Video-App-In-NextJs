@@ -135,6 +135,8 @@ function Upload() {
     })
       .then((res) => res.json())
       .then((res) => {
+        alert("Video uploaded successfully!");
+        router.push("/profile");
         setIsUploadingVideo(false);
       })
       .catch((error) => {
