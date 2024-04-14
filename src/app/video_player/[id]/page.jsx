@@ -129,7 +129,7 @@ const VideoPlayer = () => {
   if (!videoData) return <div>Loading...</div>;
 
   return (
-    <div className="flex justify-center w-full m-2 max-md:m-0 ">
+    <div className="flex justify-center w-full m-2 max-md:mx-2 ">
       <div className="w-full max-w-[60rem]">
         {/*Video Tag is hear-----------------------------------------------------------------------------------------------------------------------*/}
         <video

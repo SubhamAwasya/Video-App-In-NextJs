@@ -164,8 +164,8 @@ function Upload() {
 
   return (
     <>
-      <div className="flex bg-primary m-4 p-10 rounded-xl gap-4 max-md:flex-col">
-        <div className="w-fit">
+      <div className="flex bg-primary m-4 p-10 rounded-xl gap-4 max-md:flex-col max-md:m-2">
+        <div className="w-auto">
           <FileInput
             fileAccept="video/*"
             file={videoFile}
@@ -184,7 +184,7 @@ function Upload() {
         </div>
         <form
           onSubmit={handleFormSubmit}
-          className="flex flex-col gap-2 min-w-96"
+          className="flex flex-col items-center gap-2 "
         >
           <input
             type="text"
@@ -192,7 +192,7 @@ function Upload() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="input input-bordered w-full "
+            className="input input-bordered w-full max-md:w-72"
           />
           <textarea
             rows={10}
@@ -200,14 +200,14 @@ function Upload() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
-            className="textarea textarea-bordered textarea-lg w-full text-sm"
+            className="textarea textarea-bordered textarea-lg w-full max-md:w-72 text-sm"
           ></textarea>
           <textarea
             placeholder="Tags : comment separate with comma"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             required
-            className="textarea textarea-bordered textarea-lg w-full text-sm"
+            className="textarea textarea-bordered textarea-lg w-full max-md:w-72 text-sm"
           ></textarea>
           <button
             disabled={!videoURL || !thumbnailURL}
