@@ -216,12 +216,12 @@ const VideoPlayer = () => {
           {/*input comments-----------------------------------------------------------------------------------------------------------------------*/}
           <Textarea />
           {/* comments----------------------------------------------------------------------------------------------------------------------- */}
-          <div className="video_comments_container mt-2">
+          {/* <div className="video_comments_container mt-2">
             <span className="text-lg font-extrabold">Comments :</span>
             {comments.map((element, i) => {
               return <Comment key={i} props={element} />;
             })}
-          </div>
+          </div> */}
         </div>
       </div>
       {/*right video suggestion-----------------------------------------------------------------------------------------------------------------------*/}
