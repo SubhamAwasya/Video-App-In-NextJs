@@ -14,15 +14,14 @@ import VideoGrid from "@/components/VideoGrid";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import { MdOutlineSubscriptions } from "react-icons/md";
+import Comments from "@/components/ui-components/Comments";
 
 const VideoPlayer = () => {
   // const myContext = useMyContext();
   // const user = myContext.user;
   const { user } = useMyContext();
-
   const [videoData, setVideoData] = useState({});
   const [userData, setUserData] = useState({});
-  const [comments, setComments] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -113,10 +112,10 @@ const VideoPlayer = () => {
   useEffect(() => {
     getRandomVideos();
     addView();
+    getVideo();
   }, []);
 
   useEffect(() => {
-    getVideo();
     window.scrollTo(0, -1);
     // video play from start
     const VP = document.getElementById("videoPlayer");
@@ -124,7 +123,7 @@ const VideoPlayer = () => {
       VP.currentTime = 0;
       VP.play();
     });
-  }, [setVideoData, setComments]);
+  }, [setVideoData]);
 
   if (!videoData) return <div>Loading...</div>;
 
@@ -214,14 +213,10 @@ const VideoPlayer = () => {
           </div>
           <hr className="m-4"></hr>
           {/*input comments-----------------------------------------------------------------------------------------------------------------------*/}
-          <Textarea />
+          <Textarea videoId={params.id} />
           {/* comments----------------------------------------------------------------------------------------------------------------------- */}
-          {/* <div className="video_comments_container mt-2">
-            <span className="text-lg font-extrabold">Comments :</span>
-            {comments.map((element, i) => {
-              return <Comment key={i} props={element} />;
-            })}
-          </div> */}
+
+          <Comments videoId={params.id} />
         </div>
       </div>
       {/*right video suggestion-----------------------------------------------------------------------------------------------------------------------*/}

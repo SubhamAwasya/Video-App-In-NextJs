@@ -2,11 +2,19 @@
 import React, { useEffect, useState } from "react";
 import { format } from "timeago.js";
 
-const Comment = ({ props }) => {
-  const [commentBy, setCommentBy] = useState({});
+const Comments = ({ videoId }) => {
+  const [comments, setComments] = useState(null);
   useEffect(() => {
-    fetchCommentBy();
-  }, [setCommentBy]);
+    fetch(`http://localhost:3000/api/comment/get-comments/${videoId}`)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        setComments(res.data);
+      });
+  }, []);
+
+  return comments && <div>{comments[0].comment}</div>;
+
   return (
     <div className="my-2 p-2 bg-neutral-950 rounded-lg">
       <div className="flex items-center">
@@ -29,4 +37,4 @@ const Comment = ({ props }) => {
   );
 };
 
-export default Comment;
+export default Comments;

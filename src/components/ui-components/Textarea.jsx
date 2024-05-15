@@ -1,7 +1,7 @@
 import { useMyContext } from "@/context/ContextProvider";
 import React from "react";
 
-function Textarea() {
+function Textarea({ videoId }) {
   const { user } = useMyContext();
   // resizing textarea based on text present in text box
   function AutoResizingTextarea(event) {
@@ -14,6 +14,15 @@ function Textarea() {
   async function addComment(e) {
     e.preventDefault();
     const comment = e.target.comment.value;
+    fetch("/api/comment/add-comment", {
+      method: "POST",
+      body: JSON.stringify({ comment, userId: user._id, videoId }),
+    }).then((res) => {
+      if (res.ok) {
+        e.target.comment.value = "";
+        alert("Comment added successfully");
+      }
+    });
   }
 
   return (
@@ -29,7 +38,7 @@ function Textarea() {
           className="textarea textarea-bordered w-full resize-none rounded-lg p-2 text-sm outline-none bg-primary"
         />
         {!user || (
-          <button onClick={() => {}} className="btn btn-success mt-2">
+          <button type="submit" className="btn btn-success mt-2">
             Comment
           </button>
         )}

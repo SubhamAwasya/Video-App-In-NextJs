@@ -1,4 +1,6 @@
 "use client";
+
+// icons
 import { useMyContext } from "@/context/ContextProvider.jsx";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -41,7 +43,6 @@ function Login({ prop }) {
       })
       .then((res) => {
         // Handle the data returned from the server
-
         setIsLoading(false);
         if (res.message == "Login successful") {
           myContext.LogIn(res.data);
