@@ -113,7 +113,7 @@ const VideoPlayer = () => {
     getRandomVideos();
     addView();
     getVideo();
-  }, []);
+  }, [addView]);
 
   useEffect(() => {
     window.scrollTo(0, -1);

@@ -25,7 +25,7 @@ const Comments = ({ videoId }) => {
       ) : (
         comments.map((c) => {
           return (
-            <div className="my-2 p-2 bg-neutral-950 rounded-lg">
+            <div key={c._id} className="my-2 p-2 bg-neutral-950 rounded-lg">
               <span className="opacity-50 font-extralight">
                 {format(c.createdAt)}
               </span>

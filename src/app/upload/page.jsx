@@ -160,7 +160,7 @@ function Upload() {
     if (!window.localStorage.getItem("user")) {
       router.push("/");
     }
-  }, []);
+  }, [router]);
 
   return (
     <>

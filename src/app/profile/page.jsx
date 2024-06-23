@@ -121,7 +121,7 @@ function Profile() {
       return;
     }
     getMyVideos();
-  }, []);
+  }, [router]);
 
   return (
     <div className="flex flex-col w-full p-4 gap-4 max-md:items-center">
