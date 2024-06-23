@@ -108,7 +108,6 @@ function Profile() {
     fetch("/api/user/get-my-videos")
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setMyVideos(res);
       })
       .catch((err) => {
@@ -145,7 +144,15 @@ function Profile() {
         </form>
       </div>
       <hr></hr>
-      <VideoGrid videos={myVideos} />
+
+      {myVideos === "Unauthorized" ? (
+        <h1>Log in Again to See Your Videos</h1>
+      ) : (
+        <>
+          <h1>My Videos</h1>
+          <VideoGrid videos={myVideos} />
+        </>
+      )}
     </div>
   );
 }

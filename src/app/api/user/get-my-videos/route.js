@@ -12,6 +12,7 @@ connectDB();
 export async function GET(request) {
   try {
     const token = request.cookies.get("accessToken")?.value;
+    console.log("=> / GET / token:", token);
     if (!token) {
       return NextResponse.json("Unauthorized", {
         status: 401,
