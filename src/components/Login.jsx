@@ -125,10 +125,6 @@ function Login({ prop }) {
             <span className="loading loading-spinner text-info"></span>
           )}
         </button>
-        <button className="btn btn-outline w-full" disabled={isLoading}>
-          <FcGoogle />
-          Google
-        </button>
         <span className="mt-2">{infoText.message}</span>
         <span className="mt-2">
           Not have account !&nbsp;
